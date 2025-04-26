@@ -1,56 +1,60 @@
 // Configuration for the portfolio application
 export const config = {
-    // Base paths for assets (relative to the 'public' directory)
+    // Base paths
     modelsBasePath: '/models/',
     texturesBasePath: '/textures/',
-
-    // Draco decoder path (CDN recommended)
     dracoDecoderPath: 'https://www.gstatic.com/draco/v1/decoders/',
 
-    // Environment map settings
+    // Environment map
     environmentMap: {
-        hdrPath: 'kloppenheim_06_1k.hdr', // Match the file in your public/textures folder
-        intensity: 2.5, // Keep intensity high for now
-        useAsBackground: false,
+        hdrPath: 'kloppenheim_06_1k.hdr',
+        intensity: 1.5,
+        useAsBackground: true,
         fallbackBackgroundColor: 0x111111
     },
 
-    // Initial camera settings
+    // Camera
     camera: {
-        position: [0, 1.5, 5], // x, y, z
+        position: [0, 1.5, 7], // Movemos un poco más atrás por si los modelos son grandes
         fov: 75
     },
 
-    // Route-specific settings
+    // --- UPDATED ROUTES ---
     routes: {
-        home: {
+        home: { // F/A-18 Hornet Route
             path: '/',
-            // model: 'cube.glb', // REMOVED - We create the cube programmatically now
-            scale: 1,           // Scale for the programmatic cube
-            position: [0, 0.5, 0], // Position for the programmatic cube
-            target: [0, 0.5, 0],   // Target for the programmatic cube
-            animate: null
+            model: 'hornet.glb',      // <<< Hornet model file
+            scale: 0.5,               // <<< GUESS! Start potentially small, adjust later
+            position: [0, 1.0, 0],    // <<< Adjust Y position
+            target: [0, 1.0, 0],      // <<< Aim at model center
+            animate: (model, elapsedTime, deltaTime) => { // Simple rotation
+                if (model) model.rotation.y = elapsedTime * 0.2;
+            }
         },
-        projectExample: {
+        projectExample: { // MiG-15 Route
             path: '/proyecto-ejemplo',
-            model: null, // No model for this route
-            scale: 1,
-            position: [0, 0, 0],
-            target: [0, 0, 0],
-            animate: null
+            model: 'mig15.glb',        // <<< MiG-15 model file
+            scale: 0.8,               // <<< GUESS! May need different scale
+            position: [0, 0.8, 0],     // <<< Adjust Y position
+            target: [0, 0.8, 0],       // <<< Aim at model center
+            animate: (model, elapsedTime, deltaTime) => { // Simple rotation
+                 if (model) model.rotation.y = elapsedTime * 0.3;
+            }
         }
+        // Add more routes/projects here
     },
+    // ----------------------
 
-     // Controls settings
+     // Controls
      controls: {
         enableDamping: true,
         dampingFactor: 0.05
      },
 
-     // Lighting settings
+     // Lights
      lights: {
-         ambientIntensity: 1.0, // Keep intensity high
-         directionalIntensity: 2.0, // Keep intensity high
+         ambientIntensity: 0.7, // Slight increase maybe
+         directionalIntensity: 1.5, // Slight increase maybe
          directionalPosition: [5, 10, 7.5]
      }
 };
