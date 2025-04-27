@@ -1,60 +1,42 @@
 // Configuration for the portfolio application
 export const config = {
-    // Base paths
     modelsBasePath: '/models/',
     texturesBasePath: '/textures/',
+    fontsBasePath: '/fonts/',
     dracoDecoderPath: 'https://www.gstatic.com/draco/v1/decoders/',
 
-    // Environment map
     environmentMap: {
-        hdrPath: 'kloppenheim_06_1k.hdr',
-        intensity: 1.5,
-        useAsBackground: true,
-        fallbackBackgroundColor: 0x111111
+        hdrPath: null, intensity: 0.5, useAsBackground: false, fallbackBackgroundColor: 0xFFEBF0 // Cambiado a un rosa muy suave (LavanderBlush)
     },
 
-    // Camera
-    camera: {
-        position: [0, 1.5, 7], // Movemos un poco más atrás por si los modelos son grandes
-        fov: 75
-    },
+    camera: { position: [0, 1.0, 3.5], fov: 60 },
 
-    // --- UPDATED ROUTES ---
+    // --- ROUTES REESTRUCTURADAS ---
     routes: {
-        home: { // F/A-18 Hornet Route
+        shop: { // Vista principal de la tienda
             path: '/',
-            model: 'hornet.glb',      // <<< Hornet model file
-            scale: 0.5,               // <<< GUESS! Start potentially small, adjust later
-            position: [0, 1.0, 0],    // <<< Adjust Y position
-            target: [0, 1.0, 0],      // <<< Aim at model center
-            animate: (model, elapsedTime, deltaTime) => { // Simple rotation
-                if (model) model.rotation.y = elapsedTime * 0.2;
-            }
+            type: '2D',               // <<< Tipo de vista
+            viewElementId: 'shop-view' // <<< ID del div HTML a mostrar
         },
-        projectExample: { // MiG-15 Route
-            path: '/proyecto-ejemplo',
-            model: 'mig15.glb',        // <<< MiG-15 model file
-            scale: 0.8,               // <<< GUESS! May need different scale
-            position: [0, 0.8, 0],     // <<< Adjust Y position
-            target: [0, 0.8, 0],       // <<< Aim at model center
-            animate: (model, elapsedTime, deltaTime) => { // Simple rotation
-                 if (model) model.rotation.y = elapsedTime * 0.3;
-            }
+        teddy: { // Vista 3D del oso
+            path: '/producto/teddy',  // <<< Nueva ruta para el oso
+            type: '3D',               // <<< Tipo de vista
+            model: 'teddy.glb',
+            scale: 1.3,
+            position: [0, -0.45, 0], // Mantener posición ajustada
+            target: [0, 0.4, 0],
+            animate: null
+        },
+        moreProducts: { // Otra página 2D de ejemplo
+            path: '/mas-productos',
+            type: '2D',
+            viewElementId: 'more-products-view'
         }
-        // Add more routes/projects here
+        // Añadir más rutas 2D o 3D aquí
     },
-    // ----------------------
+    // ----------------------------
 
-     // Controls
-     controls: {
-        enableDamping: true,
-        dampingFactor: 0.05
-     },
-
-     // Lights
-     lights: {
-         ambientIntensity: 0.7, // Slight increase maybe
-         directionalIntensity: 1.5, // Slight increase maybe
-         directionalPosition: [5, 10, 7.5]
-     }
+     controls: { enableDamping: true, dampingFactor: 0.05 },
+     lights: { ambientIntensity: 0.8, directionalIntensity: 1.5, directionalPosition: [3, 5, 4] },
+     // brandText eliminado
 };
