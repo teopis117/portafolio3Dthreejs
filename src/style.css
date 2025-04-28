@@ -1,29 +1,72 @@
-/* style.css */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* :root variables (sin cambios) */
+:root {
+    --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --color-text: #333; /* ... etc ... */
+    --color-background-2d: #fff;
+    --color-background-3d: #FFEBF0; /* LavenderBlush */
+    --color-accent: #d13076;
+    --color-button: #ff69b4;
+    --color-button-hover: #ff85c1;
+    --color-border: #eee;
+    --color-card-bg: #fdfdfd;
+    --color-placeholder-bg: #f0f0f0;
+    --color-overlay-bg: rgba(10, 10, 10, 0.95);
+    --color-overlay-text: #eee;
+    --nav-background: rgba(255, 255, 255, 0.9);
+    --product-info-bg: rgba(255, 255, 255, 0.9);
+    --transition-duration: 0.4s; /* Un poco más rápido */
+    --transition-timing: ease-in-out; /* Cambiar timing */
 }
 
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: #111;
-  color: #fff;
-  font-family: sans-serif;
-}
+/* Reset Básico */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow-x: hidden; background-color: var(--color-background-2d); color: var(--color-text); font-family: var(--font-primary); }
+body { position: relative; }
 
-#bg {
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  outline: none;
-  width: 100%;
-  height: 100%;
-}
+/* Navegación */
+nav { position: fixed; top: 0; left: 0; width: 100%; padding: 15px 30px; background-color: var(--nav-background); box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 200; display: flex; gap: 20px; }
+nav a { color: var(--color-text-light, #444); text-decoration: none; font-weight: bold; padding: 5px 0; transition: color 0.3s ease; }
+nav a:hover { color: var(--color-accent); }
 
-body {
-    position: relative; /* Needed for absolute positioning of overlay */
+/* Overlay Carga */
+#loading-overlay { position: fixed; /* ... resto sin cambios ... */ }
+#loading-overlay.hidden { /* ... resto sin cambios ... */ }
+/* ... otros estilos overlay ... */
+
+/* Info Producto */
+#product-info { position: absolute; bottom: 30px; right: 30px; background-color: var(--product-info-bg); color: var(--color-text); padding: 20px; border-radius: 8px; max-width: 300px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; display: none; opacity: 0; visibility: hidden; transition: opacity var(--transition-duration) var(--transition-timing), visibility 0s linear var(--transition-duration); }
+#product-info.active { display: block; opacity: 1; visibility: visible; transition: opacity var(--transition-duration) var(--transition-timing) 0.1s, visibility 0s linear 0s; }
+/* ... estilos internos info producto sin cambios ... */
+
+/* Canvas 3D */
+#bg { display: block; /* Cambiado a block para que JS controle visibilidad */ position: fixed; top: 0; left: 0; outline: none; width: 100%; height: 100%; z-index: 1; background-color: var(--color-background-3d); opacity: 0; visibility: hidden; transition: opacity var(--transition-duration) var(--transition-timing), visibility 0s linear var(--transition-duration); }
+#bg.active { opacity: 1; visibility: visible; transition: opacity var(--transition-duration) var(--transition-timing) 0.1s, visibility 0s linear 0s; }
+
+/* Vistas 2D */
+.page-view { display: block; /* Cambiado a block para que JS controle visibilidad */ padding: 100px 30px 30px 30px; width: 100%; min-height: 100vh; box-sizing: border-box; background-color: var(--color-background-2d); position: absolute; top: 0; left: 0; opacity: 0; visibility: hidden; transition: opacity var(--transition-duration) var(--transition-timing), visibility 0s linear var(--transition-duration); }
+.page-view.active { position: relative; opacity: 1; visibility: visible; transition: opacity var(--transition-duration) var(--transition-timing) 0.1s, visibility 0s linear 0s; z-index: 10; }
+
+/* Tienda */
+#shop-view h1 { margin-bottom: 20px; color: var(--color-accent); padding-top: 20px; }
+.product-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; }
+.product-card { border: 1px solid var(--color-border); padding: 15px; border-radius: 8px; /* Bordes más redondeados */ text-align: center; background-color: var(--color-card-bg); box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición para hover */ }
+/* --- NUEVO: Efecto Hover --- */
+.product-card:hover {
+    transform: translateY(-5px); /* Levantar ligeramente */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1); /* Sombra más pronunciada */
 }
+/* ------------------------- */
+.product-card img { display: block; margin: 0 auto 15px auto; /* Más margen inferior */ max-width: 100%; height: 170px; /* Un poco más altas */ object-fit: cover; background-color: var(--color-placeholder-bg); border-radius: 5px; /* Coincidir con card */ border: 1px solid var(--color-border); }
+.product-card h3 { font-size: 1.1em; margin-bottom: 8px; /* Más margen */ }
+.product-card .price { font-weight: bold; margin-bottom: 12px; font-size: 1.05em; color: var(--color-text-light); } /* Más margen, tamaño y color */
+.product-card a { text-decoration: none; } /* Quitar subrayado de botón si es enlace */
+.product-card a button, .product-card button { background-color: var(--color-button); /* ... resto sin cambios ... */ }
+.product-card a button:hover, .product-card button:hover { background-color: var(--color-button-hover); }
+.product-card button:disabled { background-color: #ccc; cursor: not-allowed; } /* Estilo para botón deshabilitado */
+
+
+/* Más Productos */
+#more-products-view h1 { padding-top: 20px; color: var(--color-text); }
+
+/* Media Queries (sin cambios) */
+@media (max-width: 768px) { /* ... */ }
